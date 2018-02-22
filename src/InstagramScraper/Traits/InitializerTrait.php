@@ -1,4 +1,5 @@
 <?php
+
 /**
  * File:    InitializerTrait.php
  * Project: instagram-php-scraper
@@ -9,9 +10,7 @@
 
 namespace InstagramScraper\Traits;
 
-
-trait InitializerTrait
-{
+trait InitializerTrait {
 
     /**
      * @var bool
@@ -53,8 +52,7 @@ trait InitializerTrait
     /**
      * @param array $props
      */
-    protected function __construct(array $props = null)
-    {
+    protected function __construct(array $props = null) {
         $this->beforeInit();
         $this->modified = \time();
         if ($this->isAutoConstruct) {
@@ -70,19 +68,16 @@ trait InitializerTrait
     /**
      * @return $this
      */
-    protected function beforeInit()
-    {
+    protected function beforeInit() {
         return $this;
     }
 
     /**
      * @return $this
      */
-    final protected function initAuto()
-    {
+    final protected function initAuto() {
         foreach ($this as $prop => $value) {
-            if (isset(static::$initPropertiesMap[$prop]) and $methodOrProp = static::$initPropertiesMap[$prop] and \method_exists($this,
-                    $methodOrProp)
+            if (isset(static::$initPropertiesMap[$prop]) and $methodOrProp = static::$initPropertiesMap[$prop] and \method_exists($this, $methodOrProp)
             ) {
                 //if there is method then use it firstly
                 \call_user_func([$this, $methodOrProp], $value, $prop);
@@ -98,8 +93,7 @@ trait InitializerTrait
     /**
      * @return $this
      */
-    protected function initDefaults()
-    {
+    protected function initDefaults() {
         return $this;
     }
 
@@ -108,8 +102,7 @@ trait InitializerTrait
      *
      * @return $this
      */
-    final protected function init(array $props)
-    {
+    final protected function init(array $props) {
         //?reflection?
         foreach ($props as $prop => $value) {
             if (\method_exists($this, 'initPropertiesCustom')) {
@@ -143,16 +136,14 @@ trait InitializerTrait
     /**
      * @return $this
      */
-    protected function afterInit()
-    {
+    protected function afterInit() {
         return $this;
     }
 
     /**
      * @return $this
      */
-    public static function fake()
-    {
+    public static function fake() {
         return static::create()->setFake(true);
     }
 
@@ -161,9 +152,8 @@ trait InitializerTrait
      *
      * @return $this
      */
-    protected function setFake($value = true)
-    {
-        $this->isFake = (bool)$value;
+    protected function setFake($value = true) {
+        $this->isFake = (bool) $value;
 
         return $this;
     }
@@ -173,32 +163,28 @@ trait InitializerTrait
      *
      * @return static
      */
-    public static function create(array $params = null)
-    {
+    public static function create(array $params = null) {
         return new static($params);
     }
 
     /**
      * @return bool
      */
-    public function isNotEmpty()
-    {
+    public function isNotEmpty() {
         return !$this->isLoadEmpty;
     }
 
     /**
      * @return bool
      */
-    public function isFake()
-    {
+    public function isFake() {
         return $this->isFake;
     }
 
     /**
      * @return array
      */
-    public function toArray()
-    {
+    public function toArray() {
         $ret = [];
         $map = static::$initPropertiesMap;
         foreach ($map as $key => $init) {
@@ -221,8 +207,7 @@ trait InitializerTrait
      *
      * @return $this
      */
-    protected function initModified($datetime)
-    {
+    protected function initModified($datetime) {
         $this->modified = \strtotime($datetime);
 
         return $this;
@@ -234,8 +219,7 @@ trait InitializerTrait
      *
      * @return $this
      */
-    protected function initDatetime($date, $key)
-    {
+    protected function initDatetime($date, $key) {
         return $this->initProperty(\strtotime($date), $key);
     }
 
@@ -245,8 +229,7 @@ trait InitializerTrait
      *
      * @return $this
      */
-    protected function initProperty($value, $key)
-    {
+    protected function initProperty($value, $key) {
         $keys = \func_get_args();
         unset($keys[0]); //remove value
         if (\count($keys) > 1) {
@@ -270,8 +253,7 @@ trait InitializerTrait
      *
      * @return $this
      */
-    protected function initBool($value, $key)
-    {
+    protected function initBool($value, $key) {
         return $this->initProperty(!empty($value), "is{$key}", $key);
     }
 
@@ -281,9 +263,8 @@ trait InitializerTrait
      *
      * @return $this
      */
-    protected function initInt($value, $key)
-    {
-        return $this->initProperty((int)$value, $key);
+    protected function initInt($value, $key) {
+        return $this->initProperty((int) $value, $key);
     }
 
     /**
@@ -292,9 +273,8 @@ trait InitializerTrait
      *
      * @return $this
      */
-    protected function initFloat($value, $key)
-    {
-        return $this->initProperty((float)$value, $key);
+    protected function initFloat($value, $key) {
+        return $this->initProperty((float) $value, $key);
     }
 
     /**
@@ -303,18 +283,17 @@ trait InitializerTrait
      *
      * @return $this
      */
-    protected function initJsonArray($rawData, $key)
-    {
+    protected function initJsonArray($rawData, $key) {
         $value = \json_decode($rawData, true, 512, JSON_BIGINT_AS_STRING);
         if (empty($value)) {
             //could not resolve -
             if ('null' === $rawData or '' === $rawData) {
                 $value = [];
             } else {
-                $value = (array)$rawData;
+                $value = (array) $rawData;
             }
         } else {
-            $value = (array)$value;
+            $value = (array) $value;
         }
 
         return $this->initProperty($value, $key);
@@ -326,8 +305,7 @@ trait InitializerTrait
      *
      * @return $this
      */
-    protected function initExplode($value, $key)
-    {
+    protected function initExplode($value, $key) {
         return $this->initProperty(\explode(',', $value), "is{$key}", $key);
     }
 

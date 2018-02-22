@@ -8,8 +8,8 @@ use InstagramScraper\Endpoints;
  * Class Media
  * @package InstagramScraper\Model
  */
-class Media extends AbstractModel
-{
+class Media extends AbstractModel {
+
     const TYPE_IMAGE = 'image';
     const TYPE_VIDEO = 'video';
     const TYPE_SIDECAR = 'sidecar';
@@ -141,12 +141,23 @@ class Media extends AbstractModel
     protected $sidecarMedias = [];
 
     /**
+     * Image Width
+     * @var int 
+     */
+    protected $imageWidth = 0;
+
+    /**
+     * Image Height
+     * @var int 
+     */
+    protected $imageHeight = 0;
+
+    /**
      * @param string $code
      *
      * @return int
      */
-    public static function getIdFromCode($code)
-    {
+    public static function getIdFromCode($code) {
         $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
         $id = 0;
         for ($i = 0; $i < strlen($code); $i++) {
@@ -161,8 +172,7 @@ class Media extends AbstractModel
      *
      * @return mixed
      */
-    public static function getLinkFromId($id)
-    {
+    public static function getLinkFromId($id) {
         $code = Media::getCodeFromId($id);
         return Endpoints::getMediaPageLink($code);
     }
@@ -172,8 +182,7 @@ class Media extends AbstractModel
      *
      * @return string
      */
-    public static function getCodeFromId($id)
-    {
+    public static function getCodeFromId($id) {
         $parts = explode('_', $id);
         $id = $parts[0];
         $alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
@@ -189,75 +198,65 @@ class Media extends AbstractModel
     /**
      * @return mixed
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
     /**
      * @return string
      */
-    public function getShortCode()
-    {
+    public function getShortCode() {
         return $this->shortCode;
     }
 
     /**
      * @return int
      */
-    public function getCreatedTime()
-    {
+    public function getCreatedTime() {
         return $this->createdTime;
     }
 
     /**
      * @return string
      */
-    public function getType()
-    {
+    public function getType() {
         return $this->type;
     }
 
     /**
      * @return string
      */
-    public function getLink()
-    {
+    public function getLink() {
         return $this->link;
     }
 
     /**
      * @return string
      */
-    public function getImageLowResolutionUrl()
-    {
+    public function getImageLowResolutionUrl() {
         return $this->imageLowResolutionUrl;
     }
 
     /**
      * @return string
      */
-    public function getImageThumbnailUrl()
-    {
+    public function getImageThumbnailUrl() {
         return $this->imageThumbnailUrl;
     }
 
     /**
      * @return string
      */
-    public function getImageStandardResolutionUrl()
-    {
+    public function getImageStandardResolutionUrl() {
         return $this->imageStandardResolutionUrl;
     }
 
     /**
      * @return string
      */
-    public function getImageHighResolutionUrl()
-    {
+    public function getImageHighResolutionUrl() {
         return $this->imageHighResolutionUrl;
     }
-
 
     /**
      * @return array
@@ -266,125 +265,121 @@ class Media extends AbstractModel
         return $this->squareThumbnailsUrl;
     }
 
-
     /**
      * @return array
      */
-    public function getCarouselMedia()
-    {
+    public function getCarouselMedia() {
         return $this->carouselMedia;
     }
 
     /**
      * @return string
      */
-    public function getCaption()
-    {
+    public function getCaption() {
         return $this->caption;
     }
 
     /**
      * @return bool
      */
-    public function isCaptionEdited()
-    {
+    public function isCaptionEdited() {
         return $this->isCaptionEdited;
     }
 
     /**
      * @return bool
      */
-    public function isAd()
-    {
+    public function isAd() {
         return $this->isAd;
     }
 
     /**
      * @return string
      */
-    public function getVideoLowResolutionUrl()
-    {
+    public function getVideoLowResolutionUrl() {
         return $this->videoLowResolutionUrl;
     }
 
     /**
      * @return string
      */
-    public function getVideoStandardResolutionUrl()
-    {
+    public function getVideoStandardResolutionUrl() {
         return $this->videoStandardResolutionUrl;
     }
 
     /**
      * @return string
      */
-    public function getVideoLowBandwidthUrl()
-    {
+    public function getVideoLowBandwidthUrl() {
         return $this->videoLowBandwidthUrl;
     }
 
     /**
      * @return int
      */
-    public function getVideoViews()
-    {
+    public function getVideoViews() {
         return $this->videoViews;
     }
 
     /**
      * @return int
      */
-    public function getOwnerId()
-    {
+    public function getOwnerId() {
         return $this->ownerId;
     }
 
     /**
      * @return int
      */
-    public function getLikesCount()
-    {
+    public function getLikesCount() {
         return $this->likesCount;
     }
 
     /**
      * @return mixed
      */
-    public function getLocationId()
-    {
+    public function getLocationId() {
         return $this->locationId;
     }
 
     /**
      * @return string
      */
-    public function getLocationName()
-    {
+    public function getLocationName() {
         return $this->locationName;
     }
 
     /**
      * @return string
      */
-    public function getCommentsCount()
-    {
+    public function getCommentsCount() {
         return $this->commentsCount;
     }
 
     /**
      * @return Media[]|array
      */
-    public function getSidecarMedias()
-    {
+    public function getSidecarMedias() {
         return $this->sidecarMedias;
+    }
+
+    public function getImageWidth() {
+        return $this->imageWidth;
+    }
+
+    public function getImageHeight() {
+        return $this->imageHeight;
+    }
+
+    public function getDimensions() {
+        return $this->imageWidth . 'x' . $this->imageHeight;
     }
 
     /**
      * @param $value
      * @param $prop
      */
-    protected function initPropertiesCustom($value, $prop, $arr)
-    {
+    protected function initPropertiesCustom($value, $prop, $arr) {
         switch ($prop) {
             case 'id':
                 $this->id = $value;
@@ -393,7 +388,7 @@ class Media extends AbstractModel
                 $this->type = $value;
                 break;
             case 'created_time':
-                $this->createdTime = (int)$value;
+                $this->createdTime = (int) $value;
                 break;
             case 'code':
                 $this->shortCode = $value;
@@ -417,7 +412,7 @@ class Media extends AbstractModel
                 break;
             case 'thumbnail_resources':
                 $thumbnailsUrl = [];
-                foreach( $value as $thumbnail ) {
+                foreach ($value as $thumbnail) {
                     $thumbnailsUrl[] = $thumbnail['src'];
                 }
                 $this->squareThumbnailsUrl = $thumbnailsUrl;
@@ -459,7 +454,7 @@ class Media extends AbstractModel
                 $this->owner = Account::create($arr[$prop]);
                 break;
             case 'is_video':
-                if ((bool)$value) {
+                if ((bool) $value) {
                     $this->type = static::TYPE_VIDEO;
                 }
                 break;
@@ -489,7 +484,7 @@ class Media extends AbstractModel
                 $this->likesCount = $arr[$prop]['count'];
                 break;
             case 'edge_liked_by':
-            	$this->likesCount = $arr[$prop]['count'];
+                $this->likesCount = $arr[$prop]['count'];
                 break;
             case 'display_url':
                 $images = self::getImageUrls($arr[$prop]);
@@ -525,7 +520,7 @@ class Media extends AbstractModel
                 $this->owner = Account::create($arr[$prop]);
                 break;
             case 'date':
-                $this->createdTime = (int)$value;
+                $this->createdTime = (int) $value;
                 break;
             case 'display_src':
                 $images = static::getImageUrls($value);
@@ -536,6 +531,13 @@ class Media extends AbstractModel
                 if (!isset($this->type)) {
                     $this->type = static::TYPE_IMAGE;
                 }
+                break;
+            case 'dimensions'://added by comenix on Feb 22nd, 2018
+                if (!empty($value['width']))
+                    $this->imageWidth = $value['width'];
+                if (!empty($value['height']))
+                    $this->imageHeight = $value['height'];
+
                 break;
             case '__typename':
                 if ($value == 'GraphImage') {
@@ -557,8 +559,7 @@ class Media extends AbstractModel
      *
      * @return array
      */
-    private static function getImageUrls($imageUrl)
-    {
+    private static function getImageUrls($imageUrl) {
         $parts = explode('/', parse_url($imageUrl)['path']);
         $imageName = $parts[sizeof($parts) - 1];
         $urls = [
@@ -577,8 +578,7 @@ class Media extends AbstractModel
      *
      * @return mixed
      */
-    private static function setCarouselMedia($mediaArray, $carouselArray, $instance)
-    {
+    private static function setCarouselMedia($mediaArray, $carouselArray, $instance) {
         $carouselMedia = new CarouselMedia();
         $carouselMedia->setType($carouselArray['type']);
 
@@ -607,8 +607,8 @@ class Media extends AbstractModel
     /**
      * @return Account
      */
-    public function getOwner()
-    {
+    public function getOwner() {
         return $this->owner;
     }
+
 }
